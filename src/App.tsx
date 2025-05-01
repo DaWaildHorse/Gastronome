@@ -1,10 +1,11 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useRef } from "react";
 import { Loader, Placeholder } from "@aws-amplify/ui-react";
 import "./App.css";
 import { Amplify } from "aws-amplify";
 import { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 import outputs from "../amplify_outputs.json";
+
 
 
 import "@aws-amplify/ui-react/styles.css";
@@ -19,6 +20,9 @@ const amplifyClient = generateClient<Schema>({
 function App() {
   const [result, setResult] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [showCapture, setShowCapture] = useState(false);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -42,6 +46,38 @@ function App() {
       alert(`An error occurred: ${e}`);
     } finally {
       setLoading(false);
+    }
+  };
+
+    const handleOpenCamera = async () => {
+    if (!navigator.mediaDevices?.getUserMedia) {
+      alert("Tu navegador no soporta acceso a la cámara.");
+      return;
+    }
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        setShowCapture(true);
+      }
+    } catch (err) {
+      alert("No se pudo acceder a la cámara: " + err);
+    }
+  };
+
+  const handleCapture = () => {
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+
+    if (video && canvas) {
+      const context = canvas.getContext("2d");
+      if (context) {
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const imageDataUrl = canvas.toDataURL("image/png");
+        console.log("Captured Image Data URL:", imageDataUrl);
+        alert("Foto capturada. Mira la consola para el Data URL.");
+      }
     }
   };
 
@@ -70,6 +106,39 @@ function App() {
           </button>
         </div>
       </form>
+
+      <button
+  type="button"
+  className="camera-button"
+  onClick={handleOpenCamera}
+>
+  Abrir Cámara
+</button>
+
+{showCapture && (
+  <>
+    <video
+      ref={videoRef}
+      width="320"
+      height="240"
+      autoPlay
+    />
+    <canvas
+      ref={canvasRef}
+      width="320"
+      height="240"
+      style={{ display: "none" }}
+    />
+    <button
+      type="button"
+      className="capture-button"
+      onClick={handleCapture}
+    >
+      Capturar Foto
+    </button>
+  </>
+)}
+      
       <div className="result-container">
         {loading ? (
           <div className="loader-container">
@@ -84,6 +153,7 @@ function App() {
         )}
       </div>
     </div>
+    
   );
 }
 
