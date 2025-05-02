@@ -269,3 +269,37 @@ body.dark-mode select {
 body.dark-mode button {
   background-color: #6D9F71;
 }
+
+/* Estilo por defecto para el modo claro (cuando el modo oscuro no está activado) */
+.main-header {
+  font-size: 2.25rem;
+  font-weight: bold;
+  color: #1a202c; /* Color del texto en modo claro (negro) */
+}
+
+/* Estilo cuando el modo oscuro está activado */
+body.dark-mode .main-header {
+  color: white; /* Cambia el color de las letras a blanco en el modo oscuro */
+}
+
+/* En el modo claro, las letras de la descripción también pueden tener un color adecuado */
+body.dark-mode .description {
+  color: #f0f0f0; /* Color blanco para la descripción en modo oscuro */
+}
+
+body.dark-mode .result-container {
+  background-color: #333; /* Fondo más oscuro para la caja de resultado en modo oscuro */
+}
+
+body.dark-mode .navbar {
+  background-color: #444; /* Fondo más oscuro para la barra de navegación en modo oscuro */
+}
+
+body.dark-mode .navbar button {
+  color: white; /* Color de texto de los botones en el modo oscuro */
+}
+
+body.dark-mode .navbar .active {
+  border-bottom: 2px solid white; /* Resaltar botones activos en el modo oscuro */
+}
+
