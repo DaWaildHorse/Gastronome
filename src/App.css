@@ -23,7 +23,7 @@
 }
 
 .main-header .highlight {
-  color: #2563eb;
+  color: #6D9F71;
 }
 
 @media (min-width: 640px) {
@@ -37,7 +37,7 @@
   font-weight: 500;
   font-size: 1.125rem;
   max-width: 65ch;
-  color: #1a202c;
+  color: #2E2E2E;
 }
 
 .form-container {
@@ -64,7 +64,7 @@
   max-width: 300px; /* Set a maximum width for the button */
   padding: 10px;
   font-size: 16px;
-  background-color: #007bff;
+  background-color: #6D9F71;
   color: white;
   border: none;
   border-radius: 4px;
@@ -72,7 +72,7 @@
 }
 
 .search-button:hover {
-  background-color: #0056b3;
+  background-color: #6D9F71;
 }
 
 .result-container {
@@ -138,7 +138,7 @@ video {
 .camera-button, .capture-button {
   margin-top: 10px;
   padding: 10px 15px;
-  background-color: #28a745;
+  background-color: #6D9F71;
   color: white;
   border: none;
   border-radius: 4px;
