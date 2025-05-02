@@ -10,6 +10,7 @@ import outputs from "../amplify_outputs.json";
 
 import "@aws-amplify/ui-react/styles.css";
 import React from "react";
+import { useEffect } from "react"; 
 
 Amplify.configure(outputs);
 
@@ -21,8 +22,9 @@ function App() {
   const [result, setResult] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [showCapture, setShowCapture] = useState(false);
+  const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -48,19 +50,18 @@ function App() {
       setLoading(false);
     }
   };
+ 
 
-    const handleOpenCamera = async () => {
-    if (!navigator.mediaDevices?.getUserMedia) {
-      alert("Tu navegador no soporta acceso a la cámara.");
-      return;
-    }
+  useEffect(() => {
+  if (videoRef.current && cameraStream) {
+    videoRef.current.srcObject = cameraStream;
+  }
+  }, [cameraStream]);
 
+  const handleOpenCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        setShowCapture(true);
-      }
+      setCameraStream(stream);
     } catch (err) {
       alert("No se pudo acceder a la cámara: " + err);
     }
@@ -114,6 +115,16 @@ function App() {
 >
   Abrir Cámara
 </button>
+
+{cameraStream && (
+  <>
+    <video ref={videoRef} width="320" height="240" autoPlay playsInline />
+    <canvas ref={canvasRef} width="320" height="240" style={{ display: "none" }} />
+    <button type="button" className="capture-button" onClick={handleCapture}>
+      Capturar Foto
+    </button>
+  </>
+)}
 
 {showCapture && (
   <>
