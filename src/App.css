@@ -163,7 +163,10 @@ video {
 
 .captured-container {
   margin-top: 20px;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra todo horizontalmente */
+  gap: 10px; /* Espacio entre imagen y botón */
 }
 
 .captured-image {
@@ -173,5 +176,29 @@ video {
   border: 2px solid #ccc;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  margin-bottom: 10px;
+}
+
+.camera-frame {
+  position: relative;
+  width: 320px;
+  margin: 0 auto;
+}
+
+.shutter-button {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 60px;
+  border: 5px solid white;
+  background-color: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 0 2px #00000055;
+  transition: background-color 0.2s;
+}
+
+.shutter-button:hover {
+  background-color: #ffffff55;
 }

@@ -127,13 +127,11 @@ function App() {
 </button>
 
 {cameraStream && !capturedImage && (
-  <>
+  <div className="camera-frame">
     <video ref={videoRef} width="320" height="240" autoPlay playsInline />
     <canvas ref={canvasRef} width="320" height="240" style={{ display: "none" }} />
-    <button type="button" className="capture-button" onClick={handleCapture}>
-      Capturar Foto
-    </button>
-  </>
+    <button type="button" className="shutter-button" onClick={handleCapture} />
+  </div>
 )}
 
 {capturedImage && (
