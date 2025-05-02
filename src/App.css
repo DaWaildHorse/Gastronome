@@ -270,47 +270,58 @@ body.dark-mode button {
   background-color: #6D9F71;
 }
 
-/* Estilo por defecto para el modo claro (cuando el modo oscuro no está activado) */
+
 .main-header {
   font-size: 2.25rem;
   font-weight: bold;
-  color: #1a202c; /* Color del texto en modo claro (negro) */
+  color: #1a202c; 
 }
 
-/* Estilo cuando el modo oscuro está activado */
+
 body.dark-mode .main-header {
-  color: white; /* Cambia el color de las letras a blanco en el modo oscuro */
+  color: white; 
 }
 
-/* En el modo claro, las letras de la descripción también pueden tener un color adecuado */
+
 body.dark-mode .description {
-  color: #f0f0f0; /* Color blanco para la descripción en modo oscuro */
+  color: #f0f0f0; 
 }
 
 body.dark-mode .result-container {
-  background-color: #333; /* Fondo más oscuro para la caja de resultado en modo oscuro */
+  background-color: #333; 
 }
 
 body.dark-mode .navbar {
-  background-color: #444; /* Fondo más oscuro para la barra de navegación en modo oscuro */
+  background-color: #444; 
 }
 
 body.dark-mode .navbar button {
-  color: white; /* Color de texto de los botones en el modo oscuro */
+  color: white; 
 }
 
 body.dark-mode .navbar .active {
-  border-bottom: 2px solid white; /* Resaltar botones activos en el modo oscuro */
+  border-bottom: 2px solid white; 
 }
 
-/* En el modo claro, el texto de la configuración será negro */
+
 body .profile-settings h2,
 body .profile-settings label {
-  color: black; /* Cambia el color a negro en modo claro */
+  color: black; 
 }
 
-/* En el modo oscuro, el texto de la configuración será blanco para que sea legible */
+
 body.dark-mode .profile-settings h2,
 body.dark-mode .profile-settings label {
-  color: white; /* Cambia el color a blanco en modo oscuro */
+  color: white; 
+}
+
+
+body .result-container h2,
+body .result-container p {
+  color: black; 
+}
+
+body.dark-mode .result-container h2,
+body.dark-mode .result-container p {
+  color: white; 
 }
