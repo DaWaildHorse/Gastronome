@@ -25,6 +25,7 @@ function App() {
   const [showCapture, setShowCapture] = useState(false);
   const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [capturedImage, setCapturedImage] = useState<string | null>(null);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -70,16 +71,25 @@ function App() {
   const handleCapture = () => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
-
+  
     if (video && canvas) {
       const context = canvas.getContext("2d");
       if (context) {
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
         const imageDataUrl = canvas.toDataURL("image/png");
-        console.log("Captured Image Data URL:", imageDataUrl);
-        alert("Foto capturada. Mira la consola para el Data URL.");
+        setCapturedImage(imageDataUrl);
+  
+        // Detiene la cámara
+        const stream = video.srcObject as MediaStream;
+        stream.getTracks().forEach(track => track.stop());
+        video.srcObject = null;
       }
     }
+  };
+
+  const handleRetake = () => {
+    setCapturedImage(null);
+    handleOpenCamera(); // Reabre la cámara
   };
 
   return (
@@ -116,7 +126,7 @@ function App() {
   Abrir Cámara
 </button>
 
-{cameraStream && (
+{cameraStream && !capturedImage && (
   <>
     <video ref={videoRef} width="320" height="240" autoPlay playsInline />
     <canvas ref={canvasRef} width="320" height="240" style={{ display: "none" }} />
@@ -124,6 +134,15 @@ function App() {
       Capturar Foto
     </button>
   </>
+)}
+
+{capturedImage && (
+  <div className="captured-container">
+    <img src={capturedImage} alt="Captura" className="captured-image" />
+    <button type="button" className="camera-button" onClick={handleRetake}>
+      Reintentar
+    </button>
+  </div>
 )}
 
 {showCapture && (
