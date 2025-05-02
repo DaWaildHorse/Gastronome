@@ -303,3 +303,14 @@ body.dark-mode .navbar .active {
   border-bottom: 2px solid white; /* Resaltar botones activos en el modo oscuro */
 }
 
+/* En el modo claro, el texto de la configuración será negro */
+body .profile-settings h2,
+body .profile-settings label {
+  color: black; /* Cambia el color a negro en modo claro */
+}
+
+/* En el modo oscuro, el texto de la configuración será blanco para que sea legible */
+body.dark-mode .profile-settings h2,
+body.dark-mode .profile-settings label {
+  color: white; /* Cambia el color a blanco en modo oscuro */
+}
