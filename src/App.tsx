@@ -5,6 +5,8 @@ import { Amplify } from "aws-amplify";
 import { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 import outputs from "../amplify_outputs.json";
+import ProfileSettings from "./ProfileSettings";
+
 
 
 
@@ -27,7 +29,30 @@ function App() {
   const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
+// Estado para el perfil del usuario
+  const [darkMode, setDarkMode] = useState(false); // Estado para el modo oscuro
 
+  const [user, setUser] = useState<any>({
+    username: "Juan Pérez", // Nombre de ejemplo para el perfil
+    email: "juanperez@example.com", // Correo de ejemplo
+  });
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+    document.body.classList.toggle("dark-mode", !darkMode); // Cambiar la clase para el modo oscuro
+  };
+  
+  useEffect(() => {
+    const savedDarkMode = localStorage.getItem("darkMode") === "true";
+    setDarkMode(savedDarkMode);
+  
+    if (savedDarkMode) {
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+    }
+  }, []);
+  
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
@@ -187,10 +212,11 @@ function App() {
         )}
   
         {activeTab === "perfil" && (
-          <div>
-            <h2>Perfil del usuario</h2>
-            <p>Datos como nombre, email, configuración personalizada, etc.</p>
-          </div>
+          <ProfileSettings
+            darkMode={darkMode}
+            toggleDarkMode={toggleDarkMode}
+            user={user} // Aquí pasas los datos del usuario
+          />
         )}
       </div>
     </>
