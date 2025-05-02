@@ -207,3 +207,32 @@ video {
 .shutter-button:hover {
   background-color: #ffffff55;
 }
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  background-color: #1a202c;
+  padding: 10px;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.navbar button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: border-bottom 0.3s;
+}
+
+.navbar button:hover {
+  border-bottom: 2px solid #2563eb;
+}
+
+.navbar .active {
+  border-bottom: 2px solid #2563eb;
+  font-weight: bold;
+}
