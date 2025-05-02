@@ -206,8 +206,7 @@ function App() {
   
         {activeTab === "historial" && (
           <div>
-            <h2>Historial de búsquedas</h2>
-            <p>Aquí aparecerán las recetas anteriores (luego puedes conectar esto a almacenamiento).</p>
+            
           </div>
         )}
   
