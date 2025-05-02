@@ -21,6 +21,7 @@ const amplifyClient = generateClient<Schema>({
 function App() {
   const [result, setResult] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState("buscar");
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [showCapture, setShowCapture] = useState(false);
   const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
@@ -87,101 +88,112 @@ function App() {
     }
   };
 
+
   const handleRetake = () => {
     setCapturedImage(null);
     handleOpenCamera(); // Reabre la cámara
   };
 
   return (
-    <div className="app-container">
-      <div className="header-container">
-        <h1 className="main-header">
-          Gastronome
-          <br />
-        </h1>
-        <p className="description">
-
-        </p>
+    <>
+      {/* NAVBAR */}
+      <div className="navbar">
+        <button
+          className={activeTab === "buscar" ? "active" : ""}
+          onClick={() => setActiveTab("buscar")}
+        >
+          Buscar
+        </button>
+        <button
+          className={activeTab === "historial" ? "active" : ""}
+          onClick={() => setActiveTab("historial")}
+        >
+          Historial
+        </button>
+        <button
+          className={activeTab === "perfil" ? "active" : ""}
+          onClick={() => setActiveTab("perfil")}
+        >
+          Perfil
+        </button>
       </div>
-      <form onSubmit={onSubmit} className="form-container">
-        <div className="search-container">
-          <input
-            type="text"
-            className="wide-input"
-            id="ingredients"
-            name="ingredients"
-            placeholder="Ingredient1, Ingredient2, Ingredient3,...etc"
-          />
-          <button type="submit" className="search-button">
-            Generate
-          </button>
-        </div>
-      </form>
-
-      <button
-  type="button"
-  className="camera-button"
-  onClick={handleOpenCamera}
->
-  Abrir Cámara
-</button>
-
-{cameraStream && !capturedImage && (
-  <div className="camera-frame">
-    <video ref={videoRef} width="640" height="480" autoPlay playsInline />
-    <canvas ref={canvasRef} width="640" height="480" style={{ display: "none" }} />
-    <button type="button" className="shutter-button" onClick={handleCapture} />
-  </div>
-)}
-
-{capturedImage && (
-  <div className="captured-container">
-    <img src={capturedImage} alt="Captura" className="captured-image" />
-    <button type="button" className="camera-button" onClick={handleRetake}>
-      Reintentar
-    </button>
-  </div>
-)}
-
-{showCapture && (
-  <>
-    <video
-      ref={videoRef}
-      width="320"
-      height="240"
-      autoPlay
-    />
-    <canvas
-      ref={canvasRef}
-      width="320"
-      height="240"
-      style={{ display: "none" }}
-    />
-    <button
-      type="button"
-      className="capture-button"
-      onClick={handleCapture}
-    >
-      Capturar Foto
-    </button>
-  </>
-)}
-      
-      <div className="result-container">
-        {loading ? (
-          <div className="loader-container">
-            <p>Loading...</p>
-            <Loader size="large" />
-            <Placeholder size="large" />
-            <Placeholder size="large" />
-            <Placeholder size="large" />
+  
+      {/* CONTENIDO SEGÚN PESTAÑA */}
+      <div className="app-container">
+        {activeTab === "buscar" && (
+          <>
+            <div className="header-container">
+              <h1 className="main-header">Gastronome</h1>
+              <p className="description"></p>
+            </div>
+  
+            <form onSubmit={onSubmit} className="form-container">
+              <div className="search-container">
+                <input
+                  type="text"
+                  className="wide-input"
+                  id="ingredients"
+                  name="ingredients"
+                  placeholder="Ingredient1, Ingredient2, Ingredient3,...etc"
+                />
+                <button type="submit" className="search-button">
+                  Generate
+                </button>
+              </div>
+            </form>
+  
+            <button type="button" className="camera-button" onClick={handleOpenCamera}>
+              Abrir Cámara
+            </button>
+  
+            {cameraStream && !capturedImage && (
+              <div className="camera-frame">
+                <video ref={videoRef} width="640" height="480" autoPlay playsInline />
+                <canvas ref={canvasRef} width="640" height="480" style={{ display: "none" }} />
+                <button type="button" className="shutter-button" onClick={handleCapture} />
+              </div>
+            )}
+  
+            {capturedImage && (
+              <div className="captured-container">
+                <img src={capturedImage} alt="Captura" className="captured-image" />
+                <button type="button" className="camera-button" onClick={handleRetake}>
+                  Reintentar
+                </button>
+              </div>
+            )}
+  
+            <div className="result-container">
+              {loading ? (
+                <div className="loader-container">
+                  <p>Loading...</p>
+                  <Loader size="large" />
+                  <Placeholder size="large" />
+                  <Placeholder size="large" />
+                  <Placeholder size="large" />
+                </div>
+              ) : (
+                result && <p className="result">{result}</p>
+              )}
+            </div>
+          </>
+        )}
+  
+        {activeTab === "historial" && (
+          <div>
+            <h2>Historial de búsquedas</h2>
+            <p>Aquí aparecerán las recetas anteriores (luego puedes conectar esto a almacenamiento).</p>
           </div>
-        ) : (
-          result && <p className="result">{result}</p>
+        )}
+  
+        {activeTab === "perfil" && (
+          <div>
+            <h2>Perfil del usuario</h2>
+            <p>Datos como nombre, email, configuración personalizada, etc.</p>
+          </div>
         )}
       </div>
-    </div>
-    
+    </>
   );
 }
 
