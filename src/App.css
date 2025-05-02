@@ -128,11 +128,8 @@ canvas {
 }
 
 video {
-  margin: 20px auto;
-  display: block;
-  max-width: 100%;
-  width: 100%;
-  height: auto;
+  width: 100%;   /* El video tomará el 100% del ancho del contenedor */
+  height: auto;  /* La altura se ajustará automáticamente para mantener la proporción */
   border: 2px solid #ccc;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -180,8 +177,8 @@ video {
 
 .camera-frame {
   position: relative;
-  width: 640px; /* o 100% si quieres que se adapte */
-  max-width: 100%;
+  width: 100%;  /* Ancho del contenedor al 100% del contenedor principal */
+  max-width: 640px; /* Tamaño máximo de la cámara */
   margin: 0 auto;
 }
 
@@ -190,14 +187,21 @@ video {
   bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
-  width: 60px;
-  height: 60px;
+  width: 80px; /* Puedes ajustar el tamaño */
+  height: 80px; /* Puedes ajustar el tamaño */
   border: 5px solid white;
   background-color: transparent;
   border-radius: 50%;
   cursor: pointer;
   box-shadow: 0 0 0 2px #00000055;
   transition: background-color 0.2s;
+}
+
+@media (max-width: 768px) {
+  .shutter-button {
+    width: 60px;  /* Más pequeño en pantallas más pequeñas */
+    height: 60px;
+  }
 }
 
 .shutter-button:hover {
