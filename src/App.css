@@ -364,3 +364,9 @@ body.dark-mode .result-container h2,
 body.dark-mode .result-container p {
   color: white; 
 }
+
+
+body .result-container h2,
+body .result-container p {
+  color: black; 
+}
