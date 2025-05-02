@@ -128,11 +128,14 @@ canvas {
 }
 
 video {
-  margin-top: 20px;
-  border: 2px solid #ccc;
-  border-radius: 8px;
+  margin: 20px auto;
   display: block;
   max-width: 100%;
+  width: 100%;
+  height: auto;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .camera-button, .capture-button {
@@ -156,4 +159,19 @@ video {
 
 .capture-button:hover {
   background-color: #138496;
+}
+
+.captured-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.captured-image {
+  max-width: 100%;
+  width: 320px;
+  height: auto;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 10px;
 }
