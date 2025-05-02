@@ -128,8 +128,8 @@ function App() {
 
 {cameraStream && !capturedImage && (
   <div className="camera-frame">
-    <video ref={videoRef} width="320" height="240" autoPlay playsInline />
-    <canvas ref={canvasRef} width="320" height="240" style={{ display: "none" }} />
+    <video ref={videoRef} width="640" height="480" autoPlay playsInline />
+    <canvas ref={canvasRef} width="640" height="480" style={{ display: "none" }} />
     <button type="button" className="shutter-button" onClick={handleCapture} />
   </div>
 )}
