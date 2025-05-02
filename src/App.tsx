@@ -98,17 +98,17 @@ function App() {
     <>
       {/* NAVBAR */}
       <div className="navbar">
+      <button
+          className={activeTab === "historial" ? "active" : ""}
+          onClick={() => setActiveTab("historial")}
+        >
+          Historial
+        </button>
         <button
           className={activeTab === "buscar" ? "active" : ""}
           onClick={() => setActiveTab("buscar")}
         >
           Buscar
-        </button>
-        <button
-          className={activeTab === "historial" ? "active" : ""}
-          onClick={() => setActiveTab("historial")}
-        >
-          Historial
         </button>
         <button
           className={activeTab === "perfil" ? "active" : ""}

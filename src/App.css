@@ -1,7 +1,6 @@
 .app-container {
-
   margin: 0 auto;
-  padding: 20px;
+  padding: 80px 20px 20px; /* Aumentamos el padding-top */
   text-align: center;
 }
 
@@ -208,13 +207,23 @@ video {
   background-color: #ffffff55;
 }
 
+body {
+  margin: 0;
+  padding: 0;
+}
+
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background-color: #6D9F71;
   display: flex;
   justify-content: center;
-  background-color: #1a202c;
   padding: 10px;
   gap: 10px;
-  margin-bottom: 20px;
+  z-index: 1000; /* Para que siempre esté por encima */
 }
 
 .navbar button {
@@ -229,10 +238,10 @@ video {
 }
 
 .navbar button:hover {
-  border-bottom: 2px solid #2563eb;
+  border-bottom: 2px solid white;
 }
 
 .navbar .active {
-  border-bottom: 2px solid #2563eb;
+  border-bottom: 2px solid white;
   font-weight: bold;
 }
