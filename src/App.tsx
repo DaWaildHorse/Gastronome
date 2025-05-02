@@ -91,7 +91,7 @@ function App() {
 
   const handleRetake = () => {
     setCapturedImage(null);
-    handleOpenCamera(); // Reabre la cámara
+    handleOpenCamera(); 
   };
 
   return (
