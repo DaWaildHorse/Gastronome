@@ -180,7 +180,8 @@ video {
 
 .camera-frame {
   position: relative;
-  width: 320px;
+  width: 640px; /* o 100% si quieres que se adapte */
+  max-width: 100%;
   margin: 0 auto;
 }
 
