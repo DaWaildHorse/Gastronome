@@ -99,3 +99,61 @@
   font-weight: bold;
   text-align: left; /* Align text to the left */
 }
+
+.camera-button,
+.capture-button {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.camera-button:hover,
+.capture-button:hover {
+  background-color: #218838;
+}
+
+video,
+canvas {
+  margin-top: 20px;
+  max-width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+video {
+  margin-top: 20px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  display: block;
+  max-width: 100%;
+}
+
+.camera-button, .capture-button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.capture-button {
+  background-color: #17a2b8;
+}
+
+.camera-button:hover {
+  background-color: #218838;
+}
+
+.capture-button:hover {
+  background-color: #138496;
+}
