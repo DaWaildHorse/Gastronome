@@ -29,7 +29,6 @@ function App() {
   const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
-  const [facingMode, setFacingMode] = useState<"user" | "environment">("environment");
 // Estado para el perfil del usuario
   const [darkMode, setDarkMode] = useState(false); // Estado para el modo oscuro
 
@@ -88,22 +87,11 @@ function App() {
 
   const handleOpenCamera = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode },
-      });
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       setCameraStream(stream);
     } catch (err) {
       alert("No se pudo acceder a la cámara: " + err);
     }
-  };
-
-  const toggleCamera = () => {
-    setFacingMode(prev => (prev === "user" ? "environment" : "user"));
-    if (cameraStream) {
-      // Detener el stream actual antes de abrir el nuevo
-      cameraStream.getTracks().forEach(track => track.stop());
-    }
-    handleOpenCamera();
   };
 
   const handleCapture = () => {
@@ -179,14 +167,9 @@ function App() {
               </div>
             </form>
   
-            <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "10px" }}>
-              <button type="button" className="camera-button" onClick={handleOpenCamera}>
-                Abrir Cámara
-              </button>
-              <button type="button" className="camera-button" onClick={toggleCamera}>
-                Voltear Cámara
-              </button>
-            </div>
+            <button type="button" className="camera-button" onClick={handleOpenCamera}>
+              Abrir Cámara
+            </button>
   
             {cameraStream && !capturedImage && (
               <div className="camera-frame">
@@ -195,9 +178,6 @@ function App() {
                 <button type="button" className="shutter-button" onClick={handleCapture} />
               </div>
             )}
-
-
-            
   
             {capturedImage && (
               <div className="captured-container">
@@ -234,7 +214,7 @@ function App() {
           <ProfileSettings
             darkMode={darkMode}
             toggleDarkMode={toggleDarkMode}
-            user={user} 
+            user={user} // Aquí pasas los datos del usuario
           />
         )}
       </div>
