@@ -364,3 +364,11 @@ body.dark-mode .result-container h2,
 body.dark-mode .result-container p {
   color: white; 
 }
+
+.toggle-camera-button {
+  background-color: #007bff;
+}
+
+.toggle-camera-button:hover {
+  background-color: #0056b3;
+}
