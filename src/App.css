@@ -1,7 +1,6 @@
 .app-container {
-
   margin: 0 auto;
-  padding: 20px;
+  padding: 80px 20px 20px; 
   text-align: center;
 }
 
@@ -23,7 +22,7 @@
 }
 
 .main-header .highlight {
-  color: #2563eb;
+  color: #6D9F71;
 }
 
 @media (min-width: 640px) {
@@ -37,7 +36,7 @@
   font-weight: 500;
   font-size: 1.125rem;
   max-width: 65ch;
-  color: #1a202c;
+  color: #2E2E2E;
 }
 
 .form-container {
@@ -60,11 +59,11 @@
 }
 
 .search-button {
-  width: 100%; /* Make the button full width */
-  max-width: 300px; /* Set a maximum width for the button */
+  width: 100%; 
+  max-width: 300px; 
   padding: 10px;
   font-size: 16px;
-  background-color: #007bff;
+  background-color: #6D9F71;
   color: white;
   border: none;
   border-radius: 4px;
@@ -72,7 +71,7 @@
 }
 
 .search-button:hover {
-  background-color: #0056b3;
+  background-color: #218838;
 }
 
 .result-container {
@@ -97,5 +96,271 @@
   word-wrap: break-word;
   color: black;
   font-weight: bold;
-  text-align: left; /* Align text to the left */
+  text-align: left; 
+}
+
+.camera-button,
+.capture-button {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.camera-button:hover,
+.capture-button:hover {
+  background-color: #218838;
+}
+
+video,
+canvas {
+  margin-top: 20px;
+  max-width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+video {
+  width: 100%;   
+  height: auto;  
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.camera-button, .capture-button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: #6D9F71;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.capture-button {
+  background-color: #17a2b8;
+}
+
+.camera-button:hover {
+  background-color: #218838;
+}
+
+.capture-button:hover {
+  background-color: #138496;
+}
+
+.captured-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  gap: 10px; 
+}
+
+.captured-image {
+  max-width: 100%;
+  width: 320px;
+  height: auto;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.camera-frame {
+  position: relative;
+  width: 100%;  
+  max-width: 640px; 
+  margin: 0 auto;
+}
+
+.shutter-button {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px; 
+  height: 80px; 
+  border: 5px solid white;
+  background-color: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 0 2px #00000055;
+  transition: background-color 0.2s;
+}
+
+@media (max-width: 768px) {
+  .shutter-button {
+    width: 60px;  
+    height: 60px;
+  }
+}
+
+.shutter-button:hover {
+  background-color: #ffffff55;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background-color: #A3BE8C;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  gap: 10px;
+  z-index: 1000; 
+}
+
+.navbar button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: border-bottom 0.3s;
+}
+
+.navbar button:hover {
+  border-bottom: 2px solid white;
+}
+
+.navbar .active {
+  border-bottom: 2px solid white;
+  font-weight: bold;
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: #f0f0f0;
+}
+
+body.dark-mode .app-container {
+  background-color: #1e1e1e;
+}
+
+body.dark-mode .profile-settings {
+  background-color: #333;
+}
+
+body.dark-mode input,
+body.dark-mode select {
+  background-color: #2c2c2c;
+  color: white;
+  border: 1px solid #555;
+}
+
+body.dark-mode button {
+  background-color: #6D9F71;
+}
+
+
+.main-header {
+  font-size: 2.25rem;
+  font-weight: bold;
+  color: #1a202c; 
+}
+
+
+body.dark-mode .main-header {
+  color: white; 
+}
+
+
+body.dark-mode .description {
+  color: #f0f0f0; 
+}
+
+body.dark-mode .result-container {
+  background-color: #333; 
+}
+
+body.dark-mode .navbar {
+  background-color: #444; 
+}
+
+body.dark-mode .navbar button {
+  color: white; 
+}
+
+body.dark-mode .navbar .active {
+  border-bottom: 2px solid white; 
+}
+
+
+body .profile-settings h2,
+body .profile-settings label {
+  color: black; 
+}
+
+
+body.dark-mode .profile-settings h2,
+body.dark-mode .profile-settings label {
+  color: white; 
+}
+
+
+body .result-container h2,
+body .result-container p {
+  color: black; 
+}
+
+body.dark-mode .result-container h2,
+body.dark-mode .result-container p {
+  color: white; 
+}
+
+
+body.dark-mode .navbar button {
+  background-color: #444; 
+}
+
+
+body.dark-mode .navbar .active {
+  border-bottom: 2px solid white;
+  font-weight: bold;
+}
+
+
+body.dark-mode .navbar button:hover {
+  background-color: #555; 
+}
+
+
+body.dark-mode .profile-settings h2,
+body.dark-mode .profile-settings label {
+  color: white; 
+}
+
+body.dark-mode .result-container {
+  background-color: #333; 
+}
+
+body.dark-mode .main-header {
+  color: white;
+}
+
+body.dark-mode .description {
+  color: #f0f0f0; 
+}
+
+body.dark-mode .result-container h2,
+body.dark-mode .result-container p {
+  color: white; 
 }
