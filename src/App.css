@@ -99,3 +99,11 @@
   font-weight: bold;
   text-align: left; /* Align text to the left */
 }
+
+.toggle-camera-button {
+  background-color: #007bff;
+}
+
+.toggle-camera-button:hover {
+  background-color: #0056b3;
+}
