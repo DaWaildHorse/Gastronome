@@ -8,22 +8,23 @@ export const auth = defineAuth({
       verificationEmailBody: (createCode) =>
         `Use this code to confirm your account: ${createCode()}`,
     },
-    externalProviders :{
+    externalProviders: {
       google: {
-        clientId: secret('869550831718-5rk9jufe6baqad8cit4lh7e4m909lkvf.apps.googleusercontent.com '),
+        clientId: secret('869550831718-5rk9jufe6baqad8cit4lh7e4m909lkvf.apps.googleusercontent.com'),
         clientSecret: secret('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'),
-               
+        scopes: ['profile'],
         attributeMapping: {
-          email: 'email'
-        }
+          email: 'email',
+        },
       },
       callbackUrls: [
         'http://localhost:3000/profile',
-        'https://https://main.d1nryih3xi6rcm.amplifyapp.com/profile'
+        'https://main.d1nryih3xi6rcm.amplifyapp.com/profile'
       ],
-      logoutUrls: ['http://localhost:3000/', 'https://main.d1nryih3xi6rcm.amplifyapp.com'],
-    }
-    
+      logoutUrls: [
+        'http://localhost:3000/',
+        'https://main.d1nryih3xi6rcm.amplifyapp.com'
+      ]
+      },
   }
 });
-

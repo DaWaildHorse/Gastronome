@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-gastronome-dev-d43ba-authRole",
+      "UnauthRoleArn": "arn:aws:iam::339712719951:role/amplify-gastronome-dev-d43ba-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::339712719951:role/amplify-gastronome-dev-d43ba-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-gastronome-dev-d43ba-deployment",
+      "UnauthRoleName": "amplify-gastronome-dev-d43ba-unauthRole",
+      "StackName": "amplify-gastronome-dev-d43ba",
+      "StackId": "arn:aws:cloudformation:us-east-1:339712719951:stack/amplify-gastronome-dev-d43ba/04021790-28ab-11f0-97e5-0e6b2b8a65b5",
+      "AmplifyAppId": "d23l9wdfex0la4"
+    },
+    "categories": {
+      "auth": {
+        "gastronome29ccff44": {}
+      }
+    }
+  }
+}
