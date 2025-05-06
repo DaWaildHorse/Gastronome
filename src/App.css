@@ -410,3 +410,31 @@ body.dark-mode .result-container p {
 .toggle-camera-button:hover {
   background-color: #dddddd88;
 }
+.card-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.result-card {
+  display: flex;
+  align-items: center;
+  background-color: var(--amplify-colors-background-secondary);
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-image {
+  width: 120px;
+  height: auto;
+  border-radius: 8px;
+  margin-right: 1rem;
+  object-fit: cover;
+}
+
+.card-text {
+  flex: 1;
+  font-size: 1rem;
+}
