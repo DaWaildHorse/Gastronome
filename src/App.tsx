@@ -6,6 +6,7 @@ import { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 import outputs from "../amplify_outputs.json";
 import ProfileSettings from "./ProfileSettings";
+import { MdFlipCameraAndroid } from "react-icons/md";
 
 
 
@@ -31,6 +32,7 @@ function App() {
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [facingMode, setFacingMode] = useState<"user" | "environment">("environment");
   const [darkMode, setDarkMode] = useState(false); // Estado para el modo oscuro
+  const [useFrontCamera, setUseFrontCamera] = useState(false);
 
   const [user, setUser] = useState<any>({
     username: "Juan Pérez", // Nombre de ejemplo para el perfil
@@ -85,11 +87,36 @@ function App() {
   }
   }, [cameraStream]);
 
+  useEffect(() => {
+    if (activeTab === "buscar") {
+      handleOpenCamera();
+    }
+  }, [activeTab]);
+
+  useEffect(() => {
+    if (activeTab === "buscar") {
+      handleOpenCamera();
+    }
+  }, [useFrontCamera]);
+
   const handleOpenCamera = async () => {
     try {
+      if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+      }
+  
+      const constraints = {
+        video: {
+          facingMode: useFrontCamera ? "user" : "environment",
+        },
+      };
+  
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode },
       });
+
       setCameraStream(stream);
     } catch (err) {
       alert("No se pudo acceder a la cámara: " + err);
@@ -97,12 +124,16 @@ function App() {
   };
 
   const toggleCamera = () => {
+
+    setUseFrontCamera(prev => !prev);
+
     setFacingMode(prev => (prev === "user" ? "environment" : "user"));
     if (cameraStream) {
       // Detener el stream actual antes de abrir el nuevo
       cameraStream.getTracks().forEach(track => track.stop());
     }
     handleOpenCamera();
+
   };
 
   const handleCapture = () => {
@@ -178,6 +209,7 @@ function App() {
               </div>
             </form>
   
+
             <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "10px" }}>
               <button type="button" className="camera-button" onClick={handleOpenCamera}>
                 Abrir Cámara
@@ -192,6 +224,14 @@ function App() {
                 <video ref={videoRef} width="640" height="480" autoPlay playsInline />
                 <canvas ref={canvasRef} width="640" height="480" style={{ display: "none" }} />
                 <button type="button" className="shutter-button" onClick={handleCapture} />
+                <button 
+              type="button" 
+              className="toggle-camera-button" 
+              onClick={toggleCamera}
+              >
+              <MdFlipCameraAndroid size={24} />
+            </button>
+                
               </div>
             )}
   

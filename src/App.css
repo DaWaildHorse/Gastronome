@@ -365,6 +365,33 @@ body.dark-mode .result-container p {
   color: white; 
 }
 
+
+.camera-controls {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+.switch-camera-button {
+  width: 60px;
+  height: 60px;
+  background-color: #ffffff88;
+  border: none;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+.switch-camera-button:hover {
+  background-color: #dddddd88;
+}
+
 .toggle-camera-button {
   background-color: #007bff;
 }
