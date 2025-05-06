@@ -206,7 +206,7 @@ function App() {
             </form>
   
             
-  
+            {/* Camara */}
             {cameraStream && !capturedImage && (
               <div className="camera-frame">
                 <video ref={videoRef} width="640" height="480" autoPlay playsInline />
