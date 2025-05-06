@@ -113,10 +113,6 @@ function App() {
   
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
 
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode },
-      });
-
       setCameraStream(stream);
     } catch (err) {
       alert("No se pudo acceder a la cámara: " + err);
