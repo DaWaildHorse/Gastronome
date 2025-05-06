@@ -205,15 +205,7 @@ function App() {
               </div>
             </form>
   
-
-            <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "10px" }}>
-              <button type="button" className="camera-button" onClick={handleOpenCamera}>
-                Abrir Cámara
-              </button>
-              <button type="button" className="camera-button" onClick={toggleCamera}>
-                Voltear Cámara
-              </button>
-            </div>
+            
   
             {cameraStream && !capturedImage && (
               <div className="camera-frame">
