@@ -365,6 +365,7 @@ body.dark-mode .result-container p {
   color: white; 
 }
 
+
 .camera-controls {
   position: absolute;
   bottom: 10px;
@@ -389,4 +390,12 @@ body.dark-mode .result-container p {
 
 .switch-camera-button:hover {
   background-color: #dddddd88;
+}
+
+.toggle-camera-button {
+  background-color: #007bff;
+}
+
+.toggle-camera-button:hover {
+  background-color: #0056b3;
 }

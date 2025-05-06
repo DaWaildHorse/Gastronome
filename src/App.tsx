@@ -30,7 +30,7 @@ function App() {
   const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
-// Estado para el perfil del usuario
+  const [facingMode, setFacingMode] = useState<"user" | "environment">("environment");
   const [darkMode, setDarkMode] = useState(false); // Estado para el modo oscuro
   const [useFrontCamera, setUseFrontCamera] = useState(false);
 
@@ -112,6 +112,11 @@ function App() {
       };
   
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode },
+      });
+
       setCameraStream(stream);
     } catch (err) {
       alert("No se pudo acceder a la cámara: " + err);
@@ -119,7 +124,16 @@ function App() {
   };
 
   const toggleCamera = () => {
+
     setUseFrontCamera(prev => !prev);
+
+    setFacingMode(prev => (prev === "user" ? "environment" : "user"));
+    if (cameraStream) {
+      // Detener el stream actual antes de abrir el nuevo
+      cameraStream.getTracks().forEach(track => track.stop());
+    }
+    handleOpenCamera();
+
   };
 
   const handleCapture = () => {
@@ -195,6 +209,15 @@ function App() {
               </div>
             </form>
   
+
+            <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "10px" }}>
+              <button type="button" className="camera-button" onClick={handleOpenCamera}>
+                Abrir Cámara
+              </button>
+              <button type="button" className="camera-button" onClick={toggleCamera}>
+                Voltear Cámara
+              </button>
+            </div>
   
             {cameraStream && !capturedImage && (
               <div className="camera-frame">
