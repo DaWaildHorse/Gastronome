@@ -19,16 +19,19 @@ const amplifyClient = generateClient<Schema>({
 // Recipe type definitions
 const RECIPE_TYPES = [
   {
-    title: "Recipe",
-    description: ""
+    title: "Classic Recipe",
+    description: "A traditional recipe with these ingredients",
+    imageUrl: "/api/placeholder/300/200"
   },
   {
-    title: "Recipe",
-    description: "A simple and fast recipe under 30 minutes with these ingredients"
+    title: "Quick & Easy",
+    description: "A simple and fast recipe under 30 minutes with these ingredients",
+    imageUrl: "/api/placeholder/300/200" 
   },
   {
     title: "Chef's Special",
-    description: "A gourmet restaurant-style dish with these ingredients"
+    description: "A gourmet restaurant-style dish with these ingredients",
+    imageUrl: "/api/placeholder/300/200"
   }
 ];
 
@@ -45,7 +48,6 @@ function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [useFrontCamera, setUseFrontCamera] = useState(false);
   const [detectedIngredients, setDetectedIngredients] = useState<string[]>([]);
-  const [activeRecipeIndex, setActiveRecipeIndex] = useState(0);
   const [user, setUser] = useState<any>({
     username: "Juan Pérez",
     email: "juanperez@example.com",
@@ -95,7 +97,7 @@ function App() {
       
       // First recipe - Classic
       const classic = await amplifyClient.queries.askBedrock({
-        ingredients: [...ingredients]
+        ingredients: [...ingredients, "Create a classic traditional recipe with these ingredients"]
       });
       allRecipes.push(classic.errors 
         ? `Error: ${classic.errors.map(e => e.message).join(", ")}` 
@@ -103,7 +105,7 @@ function App() {
       
       // Second recipe - Quick & Easy
       const quick = await amplifyClient.queries.askBedrock({
-        ingredients: [...ingredients]
+        ingredients: [...ingredients, "Create a quick and easy recipe under 30 minutes with these ingredients"]
       });
       allRecipes.push(quick.errors 
         ? `Error: ${quick.errors.map(e => e.message).join(", ")}` 
@@ -111,14 +113,13 @@ function App() {
       
       // Third recipe - Chef's Special
       const special = await amplifyClient.queries.askBedrock({
-        ingredients: [...ingredients]
+        ingredients: [...ingredients, "Create a gourmet restaurant-style recipe with these ingredients"]
       });
       allRecipes.push(special.errors 
         ? `Error: ${special.errors.map(e => e.message).join(", ")}` 
         : (special.data?.body || "No data returned"));
       
       setRecipes(allRecipes);
-      setActiveRecipeIndex(0);
     } catch (e) {
       alert(`An error occurred while generating recipes: ${e}`);
     } finally {
@@ -232,12 +233,6 @@ function App() {
     }
   };
 
-  const switchRecipe = (index: number) => {
-    if (index >= 0 && index < recipes.length) {
-      setActiveRecipeIndex(index);
-    }
-  };
-
   return (
     <>
       {/* NAVBAR */}
@@ -309,29 +304,28 @@ function App() {
             <div className="result-container">
               {loading ? (
                 <div className="loader-container">
-                  <p>Loading...</p>
+                  <p>Loading recipes...</p>
                   <Loader size="large" />
                   <Placeholder size="large" />
                   <Placeholder size="large" />
                   <Placeholder size="large" />
                 </div>
               ) : recipes.length > 0 ? (
-                <>
-                  <div className="recipe-tabs">
-                    {RECIPE_TYPES.map((type, index) => (
-                      <button 
-                        key={index}
-                        className={activeRecipeIndex === index ? "recipe-tab active" : "recipe-tab"}
-                        onClick={() => switchRecipe(index)}
-                      >
-                        {type.title}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="recipe-content">
-                    <p className="result">{recipes[activeRecipeIndex]}</p>
-                  </div>
-                </>
+                <div className="recipe-cards-container">
+                  {recipes.map((recipe, index) => (
+                    <div key={index} className="recipe-card">
+                      <div className="recipe-card-image">
+                        <img src={RECIPE_TYPES[index].imageUrl} alt={RECIPE_TYPES[index].title} />
+                      </div>
+                      <div className="recipe-card-content">
+                        <h3 className="recipe-card-title">{RECIPE_TYPES[index].title}</h3>
+                        <div className="recipe-card-text">
+                          {recipe}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               ) : null}
             </div>
           </>
