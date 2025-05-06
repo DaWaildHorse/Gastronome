@@ -6,6 +6,7 @@ import { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 import outputs from "../amplify_outputs.json";
 import ProfileSettings from "./ProfileSettings";
+import { MdFlipCameraAndroid } from "react-icons/md";
 
 
 
@@ -31,6 +32,7 @@ function App() {
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
 // Estado para el perfil del usuario
   const [darkMode, setDarkMode] = useState(false); // Estado para el modo oscuro
+  const [useFrontCamera, setUseFrontCamera] = useState(false);
 
   const [user, setUser] = useState<any>({
     username: "Juan Pérez", // Nombre de ejemplo para el perfil
@@ -85,13 +87,39 @@ function App() {
   }
   }, [cameraStream]);
 
+  useEffect(() => {
+    if (activeTab === "buscar") {
+      handleOpenCamera();
+    }
+  }, [activeTab]);
+
+  useEffect(() => {
+    if (activeTab === "buscar") {
+      handleOpenCamera();
+    }
+  }, [useFrontCamera]);
+
   const handleOpenCamera = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+      }
+  
+      const constraints = {
+        video: {
+          facingMode: useFrontCamera ? "user" : "environment",
+        },
+      };
+  
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
       setCameraStream(stream);
     } catch (err) {
       alert("No se pudo acceder a la cámara: " + err);
     }
+  };
+
+  const toggleCamera = () => {
+    setUseFrontCamera(prev => !prev);
   };
 
   const handleCapture = () => {
@@ -167,15 +195,20 @@ function App() {
               </div>
             </form>
   
-            <button type="button" className="camera-button" onClick={handleOpenCamera}>
-              Abrir Cámara
-            </button>
   
             {cameraStream && !capturedImage && (
               <div className="camera-frame">
                 <video ref={videoRef} width="640" height="480" autoPlay playsInline />
                 <canvas ref={canvasRef} width="640" height="480" style={{ display: "none" }} />
                 <button type="button" className="shutter-button" onClick={handleCapture} />
+                <button 
+              type="button" 
+              className="toggle-camera-button" 
+              onClick={toggleCamera}
+              >
+              <MdFlipCameraAndroid size={24} />
+            </button>
+                
               </div>
             )}
   
