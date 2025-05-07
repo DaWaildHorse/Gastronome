@@ -5,7 +5,7 @@ export const detectIngredientsFromImage = async (base64Image: string): Promise<s
     formData.append("image", blob, "captured.png");
   
     const response = await fetch("http://3.87.64.102:5000/predict", {
-      method: "POST",
+      method: "POST", //post method
       body: formData,
     });
   
