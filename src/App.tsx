@@ -1,84 +1,38 @@
-import React, { FormEvent, useState, useRef, useEffect } from "react";
-import { Loader, Placeholder } from "@aws-amplify/ui-react";
-import "./App.css";
-import { Amplify } from "aws-amplify";
-import { Schema } from "../amplify/data/resource";
-import { generateClient } from "aws-amplify/data";
-import outputs from "../amplify_outputs.json";
+import React, { useState } from "react";
+import Navbar from "./components/Navbar";
+import IngredientsInput from "./components/IngredientInput";
+import Camera from "./components/Camera";
+import CapturedImage from "./components/CapturedImage";
+import RecipeCards from "./components/RecipeCards";
 import ProfileSettings from "./ProfileSettings";
-import { MdFlipCameraAndroid } from "react-icons/md";
 
+import { useDarkMode } from "./hooks/useDarkMode";
+import { useCamera } from "./hooks/useCamera";
+
+import { generateThreeRecipes } from "./services/recipeService";
+import { detectIngredientsFromImage } from "./services/detectionService";
+import RECIPE_TYPES from "./services/recypeTypes";
+
+import { Loader, Placeholder } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
-
-Amplify.configure(outputs);
-
-const amplifyClient = generateClient<Schema>({
-  authMode: "userPool",
-});
-
-// Recipe type definitions
-const RECIPE_TYPES = [
-  {
-    title: "Classic Recipe",
-    description: "A traditional recipe with these ingredients",
-    imageUrl: "/api/placeholder/300/200"
-  },
-  {
-    title: "Quick & Easy",
-    description: "A simple and fast recipe under 30 minutes with these ingredients",
-    imageUrl: "/api/placeholder/300/200" 
-  },
-  {
-    title: "Chef's Special",
-    description: "A gourmet restaurant-style dish with these ingredients",
-    imageUrl: "/api/placeholder/300/200"
-  }
-];
+import "./styles/App.css";
 
 function App() {
   const [recipes, setRecipes] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("buscar");
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [showCapture, setShowCapture] = useState(false);
-  const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
-  const [facingMode, setFacingMode] = useState<"user" | "environment">("environment");
-  const [darkMode, setDarkMode] = useState(false);
-  const [useFrontCamera, setUseFrontCamera] = useState(false);
   const [detectedIngredients, setDetectedIngredients] = useState<string[]>([]);
-  const [user, setUser] = useState<any>({
-    username: "Juan Pérez",
-    email: "juanperez@example.com",
-  });
+  const [user] = useState({ username: "Juan Pérez", email: "juanperez@example.com" });
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    document.body.classList.toggle("dark-mode", !darkMode);
-    localStorage.setItem("darkMode", (!darkMode).toString());
-  };
+  const { darkMode, toggleDarkMode } = useDarkMode();
+  const camera = useCamera();
 
-  useEffect(() => {
-    const savedDarkMode = localStorage.getItem("darkMode") === "true";
-    setDarkMode(savedDarkMode);
-
-    if (savedDarkMode) {
-      document.body.classList.add("dark-mode");
-    } else {
-      document.body.classList.remove("dark-mode");
-    }
-  }, []);
-
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const onSubmit = async (ingredients: string[]) => {
     setLoading(true);
-
     try {
-      const formData = new FormData(event.currentTarget);
-      const ingredients = formData.get("ingredients")?.toString() || "";
-      
-      await generateThreeRecipes(ingredients.split(",").map(i => i.trim()));
+      const result = await generateThreeRecipes(ingredients);
+      setRecipes(result);
     } catch (e) {
       alert(`An error occurred: ${e}`);
     } finally {
@@ -86,148 +40,16 @@ function App() {
     }
   };
 
-  // Function to generate three different recipes with the same ingredients
-  const generateThreeRecipes = async (ingredients: string[]) => {
-    setLoading(true);
-    setRecipes([]);
-    
-    try {
-      // Sequential calls to make 3 separate recipes
-      const allRecipes: string[] = [];
-      
-      // First recipe - Classic
-      const classic = await amplifyClient.queries.askBedrock({
-        ingredients: [...ingredients, "Create a classic traditional recipe with these ingredients"]
-      });
-      allRecipes.push(classic.errors 
-        ? `Error: ${classic.errors.map(e => e.message).join(", ")}` 
-        : (classic.data?.body || "No data returned"));
-      
-      // Second recipe - Quick & Easy
-      const quick = await amplifyClient.queries.askBedrock({
-        ingredients: [...ingredients, "Create a quick and easy recipe under 30 minutes with these ingredients"]
-      });
-      allRecipes.push(quick.errors 
-        ? `Error: ${quick.errors.map(e => e.message).join(", ")}` 
-        : (quick.data?.body || "No data returned"));
-      
-      // Third recipe - Chef's Special
-      const special = await amplifyClient.queries.askBedrock({
-        ingredients: [...ingredients, "Create a gourmet restaurant-style recipe with these ingredients"]
-      });
-      allRecipes.push(special.errors 
-        ? `Error: ${special.errors.map(e => e.message).join(", ")}` 
-        : (special.data?.body || "No data returned"));
-      
-      setRecipes(allRecipes);
-    } catch (e) {
-      alert(`An error occurred while generating recipes: ${e}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (videoRef.current && cameraStream) {
-      videoRef.current.srcObject = cameraStream;
-    }
-  }, [cameraStream]);
-
-  useEffect(() => {
-    if (activeTab === "buscar") {
-      handleOpenCamera();
-    }
-  }, [activeTab]);
-
-  useEffect(() => {
-    if (activeTab === "buscar") {
-      handleOpenCamera();
-    }
-  }, [useFrontCamera]);
-
-  const handleOpenCamera = async () => {
-    try {
-      if (cameraStream) {
-        cameraStream.getTracks().forEach(track => track.stop());
-      }
-
-      const constraints = {
-        video: {
-          facingMode: useFrontCamera ? "user" : "environment",
-        },
-      };
-
-      const stream = await navigator.mediaDevices.getUserMedia(constraints);
-      setCameraStream(stream);
-    } catch (err) {
-      alert("No se pudo acceder a la cámara: " + err);
-    }
-  };
-
-  const toggleCamera = () => {
-    setUseFrontCamera(prev => !prev);
-    setFacingMode(prev => (prev === "user" ? "environment" : "user"));
-    if (cameraStream) {
-      cameraStream.getTracks().forEach(track => track.stop());
-    }
-    handleOpenCamera();
-  };
-
-  const handleCapture = () => {
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-
-    if (video && canvas) {
-      const context = canvas.getContext("2d");
-      if (context) {
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const imageDataUrl = canvas.toDataURL("image/png");
-        setCapturedImage(imageDataUrl);
-
-        const stream = video.srcObject as MediaStream;
-        stream.getTracks().forEach(track => track.stop());
-        video.srcObject = null;
-      }
-    }
-  };
-
-  const handleRetake = () => {
-    setCapturedImage(null);
-    setRecipes([]);
-    setDetectedIngredients([]);
-    handleOpenCamera();
-  };
-
   const handleSendImage = async () => {
     if (!capturedImage) return;
-  
     setLoading(true);
-  
     try {
-      const res = await fetch(capturedImage);
-      const blob = await res.blob();
-  
-      const formData = new FormData();
-      formData.append("image", blob, "captured.png");
-  
-      const response = await fetch("http://54.227.211.114:5000/predict", {
-        method: "POST",
-        body: formData,
-      });
-  
-      const data = await response.json();
-  
-      if (response.ok) {
-        // Save detected ingredients
-        setDetectedIngredients(data.predictions);
-        
-        // Generate three different recipes with the same detected ingredients
-        await generateThreeRecipes(data.predictions);
-      } else {
-        alert("Server Error: " + (data.error || "Unknown error"));
-      }
-    } catch (error) {
-      alert("Fetch Error: " + error);
+      const predictions = await detectIngredientsFromImage(capturedImage);
+      setDetectedIngredients(predictions);
+      const result = await generateThreeRecipes(predictions);
+      setRecipes(result);
+    } catch (e) {
+      alert(`Error: ${e}`);
     } finally {
       setLoading(false);
     }
@@ -235,63 +57,28 @@ function App() {
 
   return (
     <>
-      {/* NAVBAR */}
-      <div className="navbar">
-        <button className={activeTab === "historial" ? "active" : ""} onClick={() => setActiveTab("historial")}>
-          Historial
-        </button>
-        <button className={activeTab === "buscar" ? "active" : ""} onClick={() => setActiveTab("buscar")}>
-          Buscar
-        </button>
-        <button className={activeTab === "perfil" ? "active" : ""} onClick={() => setActiveTab("perfil")}>
-          Perfil
-        </button>
-      </div>
+      <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      {/* CONTENIDO */}
       <div className="app-container">
         {activeTab === "buscar" && (
           <>
-            <div className="header-container">
-              <h1 className="main-header">Gastronome</h1>
-            </div>
+            <h1 className="main-header">Gastronome</h1>
 
-            <form onSubmit={onSubmit} className="form-container">
-              <div className="search-container">
-                <input
-                  type="text"
-                  className="wide-input"
-                  id="ingredients"
-                  name="ingredients"
-                  placeholder="Ingredient1, Ingredient2, etc"
-                />
-                <button type="submit" className="search-button">
-                  Generate
-                </button>
-              </div>
-            </form>
+            <IngredientsInput onSubmit={onSubmit} />
 
-            {cameraStream && !capturedImage && (
-              <div className="camera-frame">
-                <video ref={videoRef} width="640" height="480" autoPlay playsInline />
-                <canvas ref={canvasRef} width="640" height="480" style={{ display: "none" }} />
-                <button type="button" className="shutter-button" onClick={handleCapture} />
-                <button type="button" className="toggle-camera-button" onClick={toggleCamera}>
-                  <MdFlipCameraAndroid size={24} />
-                </button>
-              </div>
-            )}
-
-            {capturedImage && (
-              <div className="captured-container">
-                <img src={capturedImage} alt="Captura" className="captured-image" />
-                <button type="button" className="camera-button" onClick={handleRetake}>
-                  Reintentar
-                </button>
-                <button type="button" className="camera-button" onClick={handleSendImage}>
-                  Enviar Imagen
-                </button>
-              </div>
+            {!capturedImage ? (
+              <Camera {...camera} onCapture={setCapturedImage} />
+            ) : (
+              <CapturedImage
+                image={capturedImage}
+                onRetake={() => {
+                  setCapturedImage(null);
+                  setRecipes([]);
+                  setDetectedIngredients([]);
+                  camera.openCamera();
+                }}
+                onSend={handleSendImage}
+              />
             )}
 
             {detectedIngredients.length > 0 && (
@@ -310,23 +97,9 @@ function App() {
                   <Placeholder size="large" />
                   <Placeholder size="large" />
                 </div>
-              ) : recipes.length > 0 ? (
-                <div className="recipe-cards-container">
-                  {recipes.map((recipe, index) => (
-                    <div key={index} className="recipe-card">
-                      <div className="recipe-card-image">
-                        <img src={RECIPE_TYPES[index].imageUrl} alt={RECIPE_TYPES[index].title} />
-                      </div>
-                      <div className="recipe-card-content">
-                        <h3 className="recipe-card-title">{RECIPE_TYPES[index].title}</h3>
-                        <div className="recipe-card-text">
-                          {recipe}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : null}
+              ) : (
+                recipes.length > 0 && <RecipeCards recipes={recipes} types={RECIPE_TYPES} />
+              )}
             </div>
           </>
         )}

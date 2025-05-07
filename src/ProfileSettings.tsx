@@ -1,5 +1,4 @@
 import React from "react";
-import "./ProfileSettings.css"; // Archivo de estilos para este componente
 
 interface ProfileSettingsProps {
   darkMode: boolean;
