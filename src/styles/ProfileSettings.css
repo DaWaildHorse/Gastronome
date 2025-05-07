@@ -16,6 +16,37 @@
     margin-bottom: 5px;
   }
   
+  .setting-item input[type="checkbox"] {
+    appearance: none;
+    width: 50px;
+    height: 28px;
+    background-color: #d1d5db;
+    border-radius: 9999px;
+    position: relative;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .setting-item input[type="checkbox"]::before {
+    content: "";
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    background-color: white;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s ease;
+  }
+
+  .setting-item input[type="checkbox"]:checked {
+    background-color: rgb(109, 159, 113);
+  }
+  
+  .setting-item input[type="checkbox"]:checked::before {
+    transform: translateX(22px);
+  }
+
   .setting-item input {
     width: 100%;
     padding: 8px;
@@ -36,3 +67,5 @@
   .setting-item button:hover {
     background-color: #0056b3;
   }
+
+  

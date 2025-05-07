@@ -8,13 +8,13 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => (
   <div className="navbar">
     <button className={activeTab === "historial" ? "active" : ""} onClick={() => setActiveTab("historial")}>
-      Historial
+      History
     </button>
     <button className={activeTab === "buscar" ? "active" : ""} onClick={() => setActiveTab("buscar")}>
-      Buscar
+      Search
     </button>
     <button className={activeTab === "perfil" ? "active" : ""} onClick={() => setActiveTab("perfil")}>
-      Perfil
+      Profile
     </button>
   </div>
 );

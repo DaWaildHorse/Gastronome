@@ -13,10 +13,10 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
 }) => {
   return (
     <div className="profile-settings">
-      <h2>Configuración de Usuario</h2>
+      <h2>User Configuration</h2>
 
       <div className="setting-item">
-        <label>Modo Oscuro:</label>
+        <label>Dark Mode</label>
         <input
           type="checkbox"
           checked={darkMode}
@@ -25,27 +25,27 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
       </div>
 
       <div className="setting-item">
-        <label>Nombre:</label>
+        <label>Name:</label>
         <input
           type="text"
-          placeholder="Tu nombre"
+          placeholder="Your name"
           value={user?.username || ""}
           disabled
         />
       </div>
 
       <div className="setting-item">
-        <label>Correo electrónico:</label>
+        <label>email:</label>
         <input
           type="text"
-          placeholder="Tu correo"
+          placeholder="Your email"
           value={user?.email || ""}
           disabled
         />
       </div>
 
       <div className="setting-item">
-        <button onClick={() => alert("Cerrar sesión (esta función es opcional)")}>Cerrar sesión</button>
+        <button>Log out</button>
       </div>
     </div>
   );

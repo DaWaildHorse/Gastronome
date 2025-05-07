@@ -87,9 +87,11 @@ function App() {
 
   return (
     <>
+
       <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <div className="app-container">
+        <div className={`tab-content ${activeTab === "buscar" ? "active" : "inactive"}`} >        
         {activeTab === "buscar" && (
           <>
             <h1 className="main-header">Gastronome</h1>
@@ -139,8 +141,8 @@ function App() {
             </div>
           </>
         )}
-
-        {activeTab === "historial" && (
+        <div className={`tab-content ${activeTab === "historial" ? "active" : "inactive"}`} >
+          {activeTab === "historial" && (
           <div className="result-container">
             <h2>Recipe History</h2>
             {recipeHistory.map((pastRecipes, index) => (
@@ -151,13 +153,18 @@ function App() {
                 images={recipeImages}
               />
             ))}
+            
           </div>
         )}
-
-        {activeTab === "perfil" && (
-          <ProfileSettings darkMode={darkMode} toggleDarkMode={toggleDarkMode} user={user} />
-        )}
+        </div>
       </div>
+        <div className={`tab-content ${activeTab === "perfil" ? "active" : "inactive"}`}>
+        {activeTab === "perfil" && (
+          <ProfileSettings  darkMode={darkMode} toggleDarkMode={toggleDarkMode} user={user} />
+        )}
+        </div>
+      </div>
+
     </>
   );
 }
