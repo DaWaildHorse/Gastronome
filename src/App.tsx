@@ -11,7 +11,7 @@ import { useCamera } from "./hooks/useCamera";
 
 import { generateThreeRecipes } from "./services/recipeService";
 import { detectIngredientsFromImage } from "./services/detectionService";
-import RECIPE_TYPES from "./services/recypeTypes";
+import { getUnsplashImageForRecipe } from "./services/imageService";
 
 import { Loader, Placeholder } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
@@ -19,20 +19,42 @@ import "./styles/App.css";
 
 function App() {
   const [recipes, setRecipes] = useState<string[]>([]);
+  const [recipeHistory, setRecipeHistory] = useState<string[][]>([]);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("buscar");
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [detectedIngredients, setDetectedIngredients] = useState<string[]>([]);
   const [user] = useState({ username: "Juan Pérez", email: "juanperez@example.com" });
+  const [recipeImages, setRecipeImages] = useState<string[]>([]);
 
   const { darkMode, toggleDarkMode } = useDarkMode();
   const camera = useCamera();
+
+  const extractTitleFromRecipe = (recipe: string): string => {
+    const match = recipe.match(/:(.*?)Ingredients:/s);
+    return match?.[1]?.trim() || "Unknown Recipe";
+  };
+
+  const extractIngredientsSection = (recipe: string): string => {
+    const match = recipe.match(/(Ingredients:.*)/is);
+    return match?.[1]?.trim() || "Ingredients not found.";
+  };
+
+  const buildRecipeTypes = (recipes: string[], images: string[]) => {
+    return recipes.map((recipe, index) => ({
+      title: extractTitleFromRecipe(recipe),
+      description: extractIngredientsSection(recipe),
+      imageUrl: images[index] || "/fallback.jpg",
+    }));
+  };
 
   const onSubmit = async (ingredients: string[]) => {
     setLoading(true);
     try {
       const result = await generateThreeRecipes(ingredients);
       setRecipes(result);
+      await fetchRecipeImages(result);
+      setRecipeHistory((prev) => [result, ...prev]);
     } catch (e) {
       alert(`An error occurred: ${e}`);
     } finally {
@@ -48,11 +70,19 @@ function App() {
       setDetectedIngredients(predictions);
       const result = await generateThreeRecipes(predictions);
       setRecipes(result);
+      await fetchRecipeImages(result);
+      setRecipeHistory((prev) => [result, ...prev]);
     } catch (e) {
       alert(`Error: ${e}`);
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchRecipeImages = async (recipes: string[]) => {
+    const titles = recipes.map(extractTitleFromRecipe);
+    const images = await Promise.all(titles.map((title) => getUnsplashImageForRecipe(title)));
+    setRecipeImages(images);
   };
 
   return (
@@ -98,13 +128,31 @@ function App() {
                   <Placeholder size="large" />
                 </div>
               ) : (
-                recipes.length > 0 && <RecipeCards recipes={recipes} types={RECIPE_TYPES} />
+                recipes.length > 0 && (
+                  <RecipeCards
+                    recipes={recipes}
+                    types={buildRecipeTypes(recipes, recipeImages)}
+                    images={recipeImages}
+                  />
+                )
               )}
             </div>
           </>
         )}
 
-        {activeTab === "historial" && <div></div>}
+        {activeTab === "historial" && (
+          <div className="result-container">
+            <h2>Recipe History</h2>
+            {recipeHistory.map((pastRecipes, index) => (
+              <RecipeCards
+                key={index}
+                recipes={pastRecipes}
+                types={buildRecipeTypes(pastRecipes, recipeImages)}
+                images={recipeImages}
+              />
+            ))}
+          </div>
+        )}
 
         {activeTab === "perfil" && (
           <ProfileSettings darkMode={darkMode} toggleDarkMode={toggleDarkMode} user={user} />

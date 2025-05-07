@@ -504,3 +504,8 @@ body.dark-mode .result-container p {
     flex: 0 0 200px;
   }
 }
+.recipe-card-image img {
+  object-fit:cover;  
+  border-radius: 8px;
+}
+

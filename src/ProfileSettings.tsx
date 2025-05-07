@@ -1,10 +1,10 @@
 import React from "react";
-
+import "./styles/ProfileSettings.css";
 interface ProfileSettingsProps {
   darkMode: boolean;
   toggleDarkMode: () => void;
   user: any;
-}
+} 
 
 const ProfileSettings: React.FC<ProfileSettingsProps> = ({
   darkMode,
