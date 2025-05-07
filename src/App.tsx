@@ -210,7 +210,7 @@ function App() {
       const formData = new FormData();
       formData.append("image", blob, "captured.png");
   
-      const response = await fetch("http://54.227.211.114:5000/predict", {
+      const response = await fetch("http://3.87.64.102:5000/predict", {
         method: "POST",
         body: formData,
       });
