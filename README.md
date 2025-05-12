@@ -16,8 +16,8 @@ There is also a Google Collab Notebook where the CNN was trained
 
 ## Installation requirements
 
-Please use the following command:
-    git pull https://github.com/DaWaildHorse/Gastronome 
+Please use the following command:<br>
+    `git pull https://github.com/DaWaildHorse/Gastronome`
 
 To host the project yourself, you need an AWS account to upload the project in amplify, or use any other web host you wish.
 
@@ -26,5 +26,5 @@ To host the project yourself, you need an AWS account to upload the project in a
 
 The webpage should look like this on your phone:
 <p align="center">
-  <img src="public/upload.jpeg" alt="Description" width="400"/>
+  <img src="public/upload.jpeg" alt="Description" width="200"/>
 </p>
