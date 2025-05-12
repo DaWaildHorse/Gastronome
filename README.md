@@ -1,12 +1,29 @@
-# React + Vite
+# Gastronome
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+    This project is a web-based platform that suggests recipes based on ingredients detected through image recognition. Using an artificial intelligence model, users can upload photos of food and receive personalized recipe suggestions tailored to their dietary restrictions and culinary preferences. 
 
-Currently, two official plugins are available:
+The main goal is to promote creative and sustainable cooking, reduce food waste, and support people with diverse lifestyles. 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The system is designed to be accessible, inclusive, and scalable — with future potential for integration into mobile apps, smart kitchen devices, and nutritional tracking tools.
 
-## Expanding the ESLint configuration
+To go to the site click the following url:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- [Gastronome](https://main.d1nryih3xi6rcm.amplifyapp.com/) 
+
+There is also a Google Collab Notebook where the CNN was trained
+
+- [Notebook](https://colab.research.google.com/drive/1_IwEZUM4N8vKmyE4awLKyxnwQrYUHXZM?usp=sharing) 
+
+## Installation requirements
+
+Please use the following command:
+    `git pull https://github.com/DaWaildHorse/Gastronome` 
+
+To host the project yourself, you need an AWS account to upload the project in amplify, or use any other web host you wish.
+
+
+## UI & Project View
+
+The webpage should look like this on your phone:
+
+![App example](public/upload.jpeg)
