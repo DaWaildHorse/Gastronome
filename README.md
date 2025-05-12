@@ -1,6 +1,6 @@
 # Gastronome
 
-    This project is a web-based platform that suggests recipes based on ingredients detected through image recognition. Using an artificial intelligence model, users can upload photos of food and receive personalized recipe suggestions tailored to their dietary restrictions and culinary preferences. 
+This project is a web-based platform that suggests recipes based on ingredients detected through image recognition. Using an artificial intelligence model, users can upload photos of food and receive personalized recipe suggestions tailored to their dietary restrictions and culinary preferences. 
 
 The main goal is to promote creative and sustainable cooking, reduce food waste, and support people with diverse lifestyles. 
 
@@ -17,7 +17,7 @@ There is also a Google Collab Notebook where the CNN was trained
 ## Installation requirements
 
 Please use the following command:
-    `git pull https://github.com/DaWaildHorse/Gastronome` 
+    git pull https://github.com/DaWaildHorse/Gastronome 
 
 To host the project yourself, you need an AWS account to upload the project in amplify, or use any other web host you wish.
 
@@ -25,5 +25,6 @@ To host the project yourself, you need an AWS account to upload the project in a
 ## UI & Project View
 
 The webpage should look like this on your phone:
-
-![App example](public/upload.jpeg)
+<p align="center">
+  <img src="public/upload.jpeg" alt="Description" width="400"/>
+</p>
