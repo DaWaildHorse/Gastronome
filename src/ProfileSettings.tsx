@@ -6,6 +6,20 @@ interface ProfileSettingsProps {
   user: any;
 } 
 
+/**
+ * A React functional component that renders the profile settings UI.
+ *
+ * @component
+ * @param {ProfileSettingsProps} props - The props for the component.
+ * @param {boolean} props.darkMode - Indicates whether dark mode is enabled.
+ * @param {() => void} props.toggleDarkMode - A function to toggle the dark mode state.
+ * @param {Object} [props.user] - The user object containing user details.
+ * @param {string} [props.user.username] - The username of the user.
+ * @param {string} [props.user.email] - The email address of the user.
+ *
+ * @returns {JSX.Element} The rendered profile settings component.
+ *
+ */
 const ProfileSettings: React.FC<ProfileSettingsProps> = ({
   darkMode,
   toggleDarkMode,
