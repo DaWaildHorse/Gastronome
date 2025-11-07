@@ -1,43 +1,24 @@
-export function request(ctx) {
-    const { ingredients = [] } = ctx.args;
-  
-    // Construct the prompt with the provided ingredients
-    const prompt = `Suggest a recipe idea using these ingredients: ${ingredients.join(", ")} please just give me the recipe name , the ingredients and the instructions. only that`;
-  
-    // Return the request configuration
-    return {
-      resourcePath: `/model/anthropic.claude-3-sonnet-20240229-v1:0/invoke`,
-      method: "POST",
-      params: {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          anthropic_version: "bedrock-2023-05-31",
-          max_tokens: 1000,
-          messages: [
-            {
-              role: "user",
-              content: [
-                {
-                  type: "text",
-                  text: `\n\nHuman: ${prompt}\n\nAssistant:`,
-                },
-              ],
-            },
-          ],
-        }),
-      },
-    };
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import secret  from "@aws-amplify/backend";
+
+const genAI = new GoogleGenerativeAI(secret("GEMINI_API_KEY"));
+
+export const request = async (ctx) => {
+  const { ingredients = [] } = ctx.args;
+  const prompt = `Suggest a recipe idea using these ingredients: ${ingredients.join(", ")}.
+Please include only:
+- Recipe name
+- Ingredients
+- Instructions`;
+
+  try {
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const result = await model.generateContent(prompt);
+    const text = result.response.text();
+
+    return { body: text, error: "" };
+  } catch (err) {
+    console.error("Gemini API error:", err);
+    return { body: "", error: err.message || "Gemini request failed" };
   }
-  
-  export function response(ctx) {
-    // Parse the response body
-    const parsedBody = JSON.parse(ctx.result.body);
-    // Extract the text content from the response
-    const res = {
-      body: parsedBody.content[0].text,
-    };
-    // Return the response
-    return res;
-  }
+};

@@ -6,7 +6,7 @@ import { Schema } from "../../amplify/data/resource";
 Amplify.configure(outputs);
 
 const amplifyClient = generateClient<Schema>({
-  authMode: "userPool",
+  authMode: "apiKey",
 });
 
 /**
@@ -27,14 +27,33 @@ const amplifyClient = generateClient<Schema>({
  * - If errors occur: `["Error: Error message 1", "Error: Error message 2", "Error: Error message 3"]`
  */
 
-export const generateThreeRecipes = async (ingredients: string[]): Promise<string[]> => {
-  const responses = await Promise.all(
-    [1, 2, 3].map(() =>
-      amplifyClient.queries.askBedrock({ ingredients: [...ingredients] })
-    )
-  );
 
-  return responses.map(res =>
-    res.errors ? `Error: ${res.errors.map(e => e.message).join(", ")}` : res.data?.body || "No data"
-  );
+export const generateThreeRecipes = async (ingredients: string[]): Promise<string[]> => {
+  try {
+    // Run 3 Gemini calls in parallel
+    const responses = await Promise.all(
+      [1, 2, 3].map(() =>
+        amplifyClient.queries.askBedrock({
+          ingredients: [...ingredients],
+        })
+      )
+    );
+
+    // Extract the recipe text from each response
+    const recipes = responses.map((res: any) => {
+      if (res?.data?.askGemini?.body) {
+        return res.data.askGemini.body.trim();
+      }
+      console.error("Gemini query error:", res);
+      return "Error generating recipe.";
+    });
+
+    return recipes;
+  } catch (error) {
+    console.error("Error calling Gemini API:", error);
+    return ["Error generating recipes."];
+  }
 };
+
+
+

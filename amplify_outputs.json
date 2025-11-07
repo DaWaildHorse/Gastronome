@@ -1,9 +1,9 @@
 {
   "auth": {
-    "user_pool_id": "us-east-1_OsgrvwJ8Q",
+    "user_pool_id": "us-east-1_OyYs30Zxf",
     "aws_region": "us-east-1",
-    "user_pool_client_id": "7ct5dqi053nvh3r19lv97inhv4",
-    "identity_pool_id": "us-east-1:42195785-4b48-473a-8cb9-548b358fea56",
+    "user_pool_client_id": "2lbka9uol8cken4l3ffh3n5p0j",
+    "identity_pool_id": "us-east-1:b7e3d2d0-720c-45d0-b26c-d49573edab24",
     "mfa_methods": [],
     "standard_required_attributes": [
       "email"
@@ -23,12 +23,34 @@
       "require_symbols": true,
       "require_uppercase": true
     },
+    "oauth": {
+      "identity_providers": [
+        "GOOGLE"
+      ],
+      "redirect_sign_in_uri": [
+        "http://localhost:3000/profile",
+        "https://main.d1nryih3xi6rcm.amplifyapp.com/profile"
+      ],
+      "redirect_sign_out_uri": [
+        "http://localhost:3000/",
+        "https://main.d1nryih3xi6rcm.amplifyapp.com"
+      ],
+      "response_type": "code",
+      "scopes": [
+        "phone",
+        "email",
+        "openid",
+        "profile",
+        "aws.cognito.signin.user.admin"
+      ],
+      "domain": "5aba5f7cc5e45306bdfe.auth.us-east-1.amazoncognito.com"
+    },
     "unauthenticated_identities_enabled": true
   },
   "data": {
-    "url": "https://hgxovudimrh3zkubiensyqsyq4.appsync-api.us-east-1.amazonaws.com/graphql",
+    "url": "https://qcwlm3v3onfazmg22dbi57meoa.appsync-api.us-east-1.amazonaws.com/graphql",
     "aws_region": "us-east-1",
-    "api_key": "da2-izwa57pqvrcw7hrvqr67knea54",
+    "api_key": "da2-5ku35sy62rftlbxo7rkr4kfzgu",
     "default_authorization_type": "API_KEY",
     "authorization_types": [
       "AMAZON_COGNITO_USER_POOLS",
