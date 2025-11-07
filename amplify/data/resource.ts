@@ -6,7 +6,7 @@ const schema = a.schema({
     error: a.string(),
   }),
 
-  askGemini: a
+  askBedrock: a
     .query()
     .arguments({ ingredients: a.string().array() })
     .returns(a.ref("GeminiResponse"))
@@ -18,8 +18,11 @@ export type Schema = ClientSchema<typeof schema>;
 
 export const data = defineData({
   schema,
+
   authorizationModes: {
     defaultAuthorizationMode: "apiKey",
-    apiKeyAuthorizationMode: { expiresInDays: 30 },
+    apiKeyAuthorizationMode: {
+      expiresInDays: 30,
+    },
   },
 });
