@@ -15,7 +15,7 @@ export const detectIngredientsFromImage = async (base64Image: string): Promise<s
   formData.append("image", blob, "captured.png");
 
   // Send the image to the prediction service via a POST request paste IP address here with endpoint
-  const response = await fetch("", { //IP adress goes here
+  const response = await fetch("http://54.234.33.155:8000/predict", { //IP adress goes here
     method: "POST", // HTTP POST method
     body: formData, // Form data containing the image
   });
